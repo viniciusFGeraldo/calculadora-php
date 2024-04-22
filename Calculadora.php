@@ -8,20 +8,106 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <h2>Calculadora PHP</h2>
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <input type="text" name="num1" placeholder="Digite o primeiro número" required>
-        <select name="operator">
-            <option value="add">+</option>
-            <option value="subtract">-</option>
-            <option value="multiply">*</option>
-            <option value="divide">/</option>
-        </select>
-        <input type="text" name="num2" placeholder="Digite o segundo número" required>
-        <button type="submit" name="submit">Calcular</button>
+    
+    <form method="get" action="">
+        <legend>Calculadora PHP</legend>
+
+        <fieldset>
+            <label for="num1">Numero 1</label>
+            <input type="text" name="num1" id="num1" placeholder="Digite o primeiro número" required>
+
+            <label for="operator"></label>
+            <select name="operator" id="operator">
+                <option value="" ></option>
+                <option value="add">+</option>
+                <option value="subtract">-</option>
+                <option value="multiply">*</option>
+                <option value="divide">/</option>
+            </select>
+
+            <label for="num2">Numero 2</label>
+            <input type="text" name="num2" id="num2" placeholder="Digite o segundo número" required>
+            <br>
+
+            <button type="submit">Calcular</button>
+        </fieldset>
     </form>
 
+    <br> <br>
+
+    <form action="" method="post">
+        <legend>Resultado</legend>
+        <fieldset>
+            <input type="text" name="Expressao" id="Expressao"
+            value = <?php
+                $num1 = 0;
+                $num2 = 0;
+                $operator = "";
+                $resultado = 0;
+                $stringFinal = "";
+
+                foreach ($_GET as $key => $get) {
+                    switch ($key) {
+                        case 'num1':
+                            $num1 = $get;
+                            break;
+
+                        case 'num2':
+                            $num2 = $get;
+                            break;
+
+                        case 'operator':
+                            $operator = $get;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+
+                switch ($operator) {
+                    case 'add':
+                        $resultado = $num1 + $num2;
+                        $operator = "+";
+                        break;
+
+                    case 'subtract':
+                        $resultado = $num1 - $num2;
+                        $operator = "-";
+                        break;
+
+                    case 'multiply':
+                        $resultado = $num1 * $num2;
+                        $operator = "*";
+                        break;
+
+                    case 'divide':
+                        $resultado = $num1 / $num2;
+                        $operator = "-";
+                        break;
+                    
+                    default:
+                        
+                        break;
+                }
+                
+                if($operator == ""){
+                    echo "'operador invalido'";
+                }else{
+                    echo "'$num1 $operator $num2 = $resultado'";
+                }
+
+
+            ?>
+            >
+
+        </fieldset>
+    </form>
+
+    
+
     <?php
+
     if(isset($_POST['submit'])) {
         $num1 = $_POST['num1'];
         $num2 = $_POST['num2'];
