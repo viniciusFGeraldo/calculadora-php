@@ -100,6 +100,18 @@
 
             ?>
             >
+            <div>
+                <button>Salvar</button>
+                <button>Pegar Valores</button>
+                <button>M</button>
+                <button>Apagar Relatório</button>
+            </div>
+
+            <div>
+                <h1>Histórico</h1>
+                <textarea name="historico" id="historico" cols="30" rows="10"></textarea>
+            </div>
+            
 
         </fieldset>
     </form>
