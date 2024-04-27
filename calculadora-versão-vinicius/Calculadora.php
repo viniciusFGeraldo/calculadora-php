@@ -12,11 +12,11 @@
         $_SESSION['resultados'] = array();
     }
 
-    $num1 = $_GET['num1'];
-    $operador = $_GET['operador'];
-    $num2 = $_GET['num2'];
+    $num1 = $_POST['num1'];
+    $operador = $_POST['operador'];
+    $num2 = $_POST['num2'];
 
-    if(isset($_GET['num1']) && isset($_GET['operador']) && isset($_GET['num2'])){
+    if(isset($_POST['num1']) && isset($_POST['operador']) && isset($_POST['num2'])){
         switch($operador) {
             case "adicao":
                 $result = $num1 + $num2;
@@ -63,7 +63,7 @@
 </head>
 
 <body>
-    <form action="" method="get">
+    <form action="" method="post">
         <fieldset>
             <div>
                 <h1>Calculadora PHP</h1>
@@ -88,16 +88,16 @@
             
             <input type="text" name="resultadoAtual" id="resultadoAtual" style="width: 100%;"
                 value="<?php 
-                    echo isset($_SESSION['resultadoAtual']) ? $_SESSION['resultadoAtual'] : ''; 
-                    // if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['resultados'])) {
-                    //     echo "<input type='text' name='resultadoAtual' id='resultadoAtual' style='width: 100%;' value='';";
-                    // }
+                    echo isset($_SESSION['resultadoAtual']) ? $_SESSION['resultadoAtual'] : '';
+                    if(!empty($_SESSION['salvar'])){
+                        echo $_SESSION['resultadoAtual'] = '';
+                    }
                 ?>"><br><br>
                 
         </fieldset>
     </form>
     <form action="" method="post">
-        <button type="submit">Salvar</button><br><br>
+        <button type="submit" name="salvar">Salvar</button><br><br>
         <button type="submit" name="pegar_valores">Pegar Valores</button>
         <button type="submit" name="apagar_historico" value="true">Apagar histórico</button>
         <ul style="list-style-type: none; padding: 0;">
@@ -110,7 +110,11 @@
                     if (isset($_POST['apagar_historico']) && $_POST['apagar_historico'] == 'true') {
                         $_SESSION['resultados'] = array();
                     } else {
-                        $_SESSION['resultados'][] = $_SESSION['resultadoAtual'];
+                        if (isset($_POST['salvar'])) {
+                            $_SESSION['resultados'][] = $_SESSION['resultadoAtual'];
+                            $_SESSION['resultadoAtual'] = '';
+                            
+                        }
                     }
                     foreach ($_SESSION['resultados'] as $valor) {
                         echo "<li>$valor</li>";
