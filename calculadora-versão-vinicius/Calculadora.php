@@ -85,27 +85,40 @@
             <input type="number" name="num2" id="num2"><br><br>
 
             <button type="submit">Calcular</button><br><br>
-
+            
             <input type="text" name="resultadoAtual" id="resultadoAtual" style="width: 100%;"
-                value="<?php echo isset($_SESSION['resultadoAtual']) ? $_SESSION['resultadoAtual'] : ''; ?>"><br><br>
+                value="<?php 
+                    echo isset($_SESSION['resultadoAtual']) ? $_SESSION['resultadoAtual'] : ''; 
+                    // if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['resultados'])) {
+                    //     echo "<input type='text' name='resultadoAtual' id='resultadoAtual' style='width: 100%;' value='';";
+                    // }
+                ?>"><br><br>
+                
         </fieldset>
     </form>
     <form action="" method="post">
         <button type="submit">Salvar</button><br><br>
-        <button type="submit">Apagar histórico</button>
+        <button type="submit" name="pegar_valores">Pegar Valores</button>
+        <button type="submit" name="apagar_historico" value="true">Apagar histórico</button>
         <ul style="list-style-type: none; padding: 0;">
-        <?php
-            if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['resultados'])) {
-                $_SESSION['resultados'][] = $_SESSION['resultadoAtual'];
-            
-                foreach ($_SESSION['resultados'] as $valor) {
-                    echo "<li>$valor</li>";
+            <?php
+                if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['resultados'])) {
+                    if(isset($_POST['pegar_valores']) && $_POST['pegar_valores'] == 'true' && !empty($_SESSION['resultados'])){
+                        end($_SESSION['resultados']);
+                        echo isset($_SESSION['resultadoAtual']) ? current($_SESSION['resultados']) : '';
+                    }
+                    if (isset($_POST['apagar_historico']) && $_POST['apagar_historico'] == 'true') {
+                        $_SESSION['resultados'] = array();
+                    } else {
+                        $_SESSION['resultados'][] = $_SESSION['resultadoAtual'];
+                    }
+                    foreach ($_SESSION['resultados'] as $valor) {
+                        echo "<li>$valor</li>";
+                    }
                 }
-            }
-        ?>
+            ?>
         </ul>
-
-    </form>
+</form>
 
 
 
