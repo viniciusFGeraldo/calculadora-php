@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <?php
         
         session_start();
@@ -72,76 +73,89 @@
     ?>
 </head>
 
-<body>
-    <form action="" method="get">
-        <fieldset>
-            <legend>
-                <h1>Calculadora PHP</h1>
-            </legend>
-            <div style="display:flex; ">
-                <label for="num1">Número 1</label>
-                <input type="number" name="num1" id="num1">
+<body class="bg-dark">
+    <main class="m-3">
+        <form action="" method="get" >
+            <fieldset>
+                <legend class="bg-white rounded ps-3">
+                    <h1 class="fs-3">Calculadora PHP</h1>
+                </legend>
+                <div class="d-flex flex-row">                    
 
-                <select name="operador" id="operador" style="margin-left: 5px;">
-                    <option value=""></option>
-                    <option value="adicao">Adição (+)</option>
-                    <option value="subtracao">Subtração (-)</option>
-                    <option value="multiplicacao">Multiplicação (*)</option>
-                    <option value="divisao">Divisão (/)</option>
-                    <option value="fatorial">Fatorial (n!)</option>
-                    <option value="potencia">Potência (^)</option>
-                </select>
+                    <div class="input-group d-flex flex-row me-4">
+                        <label class="input-group-text" id="basic-addon1" for="num1">Número 1</label>
+                        <input type="number" name="num1" id="num1" class="form-control" placeholder="Número" aria-label="Número" aria-describedby="basic-addon1">
+                    </div>
 
-                <div id="num2" style="margin-left: 5px;">
-                    <label for="num2" id="labelnum2">Número 2</label>
-                    <input type="number" name="num2" id="num2">
+                    <select name="operador" id="operador"  class="form-select-sm me-4">
+                        <option selected>Operação</option>
+                        <option value="adicao">Adição (+)</option>
+                        <option value="subtracao">Subtração (-)</option>
+                        <option value="multiplicacao">Multiplicação (*)</option>
+                        <option value="divisao">Divisão (/)</option>
+                        <option value="fatorial">Fatorial (n!)</option>
+                        <option value="potencia">Potência (^)</option>
+                    </select>
+
+                    <div class="input-group d-flex flex-row" id="num2">
+                        <label class="input-group-text" id="basic-addon1" for="num2">Número 2</label>
+                        <input type="number" name="num2" id="num2" class="form-control" placeholder="Número" aria-label="Número" aria-describedby="basic-addon1">
+                    </div>
+
                 </div>
 
-            </div>
-            
-            <br>
+                <button type="submit" class="btn btn-outline-success mt-2 mb-3">Calcular</button>
+            </fieldset>
 
-            <button type="submit">Calcular</button><br><br>
+            <fieldset disabled>
+                <div class="input-group flex-nowrap mb-3" >
+                    <label class="input-group-text" id="addon-wrapping" for="disabledTextInput">Resultado</label>
+                    <input type="text" class="form-control" placeholder="Resultado" aria-label="Resultado" aria-describedby="addon-wrapping" id="disabledTextInput"
+                        value="<?php
+                            if(isset($_SESSION['resultadoPegado']) && $_SESSION['resultadoPegado'] != ""){
+                                echo $_SESSION['resultadoPegado'];
+                            }else if(isset($_GET['visualizarMemoria']) && ($_GET['visualizarMemoria']) != ""){
+                                echo $_SESSION['memoria'];
+                            }else{
+                                    echo isset($_SESSION['resultado']) ? $_SESSION['resultado'] : '';
+                            }
+                        ?>"
+                    >
+                </div>
+            </fieldset>
+        </form>
 
+        <form action="./dados.php" method="post">
 
-            <input type="text" id="resultadoAtual" style="width: 100%;" value=
-            "<?php
-                if(isset($_SESSION['resultadoPegado']) && $_SESSION['resultadoPegado'] != ""){
-                    echo $_SESSION['resultadoPegado'];
-                }else if(isset($_GET['visualizarMemoria']) && ($_GET['visualizarMemoria']) != ""){
-                    echo $_SESSION['memoria'];
-                }else{
-                        echo isset($_SESSION['resultado']) ? $_SESSION['resultado'] : '';
+            <fieldset>
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <button type="submit" name="salvar" class="btn btn-outline-warning">Salvar</button>
+                    <button type="submit" name="pegar_valores" class="btn btn-outline-secondary">Pegar Valores</button>
+                    <button type="submit" name="memoria" class="btn btn-outline-primary">M</button>
+                    <button type="submit" name="apagar_historico" class="btn btn-outline-danger">Apagar histórico</button>
+                </div>
+            </fieldset>
+
+        </form>
+
+        <h2 class="bg-white rounded ps-3 mt-3 fs-3">Histórico</h2>
+
+        <ul style="list-style-type: none; padding: 0;">
+            <?php
+                if (!isset($_SESSION['resultados'])) {
+                    $_SESSION['resultados'] = array();
                 }
-            ?>"><br><br>
-        </fieldset>
-    </form>
 
-    <form action="./dados.php" method="post">
-
-        <fieldset>
-            <button type="submit" name="salvar">Salvar</button><br><br>
-            <button type="submit" name="pegar_valores">Pegar Valores</button>
-            <button type="submit" name="memoria">M</button>
-            <button type="submit" name="apagar_historico">Apagar histórico</button>
-        </fieldset>
-
-    </form>
-
-    <ul style="list-style-type: none; padding: 0;">
-        <?php
-            if (!isset($_SESSION['resultados'])) {
-                $_SESSION['resultados'] = array();
-            }
-
-            foreach ($_SESSION['resultados'] as $valor) {
-                echo "<li>$valor</li>";
-            }
-        ?>
-    </ul>
-
+                foreach ($_SESSION['resultados'] as $valor) {
+                    echo "<li>$valor</li>";
+                }
+            ?>
+        </ul>
+    </main>
 </body>
 
 <script src="./index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
 </html>
