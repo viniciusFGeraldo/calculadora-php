@@ -18,6 +18,8 @@
 
             if((($num1 != "") && ($num2 != "")) || (($num1 != "") && ($operador == "fatorial"))){
                 $_SESSION['resultadoPegado'] = "";
+                $_SESSION['memoria'] = "";
+
 
                 switch ($operador) {
                     case "adicao":
@@ -51,7 +53,7 @@
                             $result *= $i;
                         }
     
-                        $_SESSION['resultado'] = "$num1! é $result ";
+                        $_SESSION['resultado'] = "$num1 ! = $result ";
                         break;
     
                     case "potencia":
@@ -84,22 +86,67 @@
 
                     <div class="input-group d-flex flex-row me-4">
                         <label class="input-group-text" id="basic-addon1" for="num1">Número 1</label>
-                        <input type="number" name="num1" id="num1" class="form-control" placeholder="Número" aria-label="Número" aria-describedby="basic-addon1">
+                        <input type="number" name="num1" id="num1" class="form-control" placeholder="Número" aria-label="Número" aria-describedby="basic-addon1"
+                        value="<?php
+                            if(isset($_GET['num1'])){
+                                echo $_GET['num1'];
+                            }
+                        ?>"
+                        >
                     </div>
-
                     <select name="operador" id="operador"  class="form-select-sm me-4">
-                        <option selected>Operação</option>
-                        <option value="adicao">Adição (+)</option>
-                        <option value="subtracao">Subtração (-)</option>
-                        <option value="multiplicacao">Multiplicação (*)</option>
-                        <option value="divisao">Divisão (/)</option>
-                        <option value="fatorial">Fatorial (n!)</option>
-                        <option value="potencia">Potência (^)</option>
+                        <option <?php
+                            if(!isset($_GET['operador'] ) || $_GET['operador'] == ''){
+                                echo "selected";
+                            }
+                        ?>>Operação</option>
+
+                        <option value="adicao" <?php
+                                if(isset($_GET['operador'] ) && $_GET['operador'] == 'adicao'){
+                                    echo "selected";
+                                }
+                        ?>>Adição (+)</option>
+
+                        <option value="subtracao" <?php
+                                if(isset($_GET['operador'] ) && $_GET['operador'] == 'subtracao'){
+                                    echo "selected";
+                                }
+                        ?>>Subtração (-)</option>
+
+                        <option value="multiplicacao" <?php
+                                if(isset($_GET['operador'] ) && $_GET['operador'] == 'multiplicacao'){
+                                    echo "selected";
+                                }
+                        ?>>Multiplicação (*)</option>
+
+                        <option value="divisao" <?php
+                                if(isset($_GET['operador'] ) && $_GET['operador'] == 'divisao'){
+                                    echo "selected";
+                                }
+                        ?>>Divisão (/)</option>
+
+                        <option value="fatorial" <?php
+                                if(isset($_GET['operador'] ) && $_GET['operador'] == 'fatorial'){
+                                    echo "selected";
+                                }
+                        ?>>Fatorial (n!)</option>
+
+                        <option value="potencia" <?php
+                                if(isset($_GET['operador'] ) && $_GET['operador'] == 'potencia'){
+                                    echo "selected";
+                                }
+                        ?>>Potência (^)</option>
                     </select>
 
-                    <div class="input-group d-flex flex-row" id="num2">
-                        <label class="input-group-text" id="basic-addon1" for="num2">Número 2</label>
-                        <input type="number" name="num2" id="num2" class="form-control" placeholder="Número" aria-label="Número" aria-describedby="basic-addon1">
+                    <div class="input-group d-flex flex-row" id="divNum2">
+                        <label class="input-group-text" id="labelnum2" for="num2">Número 2</label>
+                        <input type="number" name="num2" id="num2" class="form-control" placeholder="Número" aria-label="Número" aria-describedby="basic-addon1"
+                        value="<?php
+                            if(isset($_GET['num2'])){
+                                echo $_GET['num2'];
+                            }
+                        ?>"
+                        >
                     </div>
 
                 </div>
@@ -140,14 +187,14 @@
 
         <h2 class="bg-white rounded ps-3 mt-3 fs-3">Histórico</h2>
 
-        <ul style="list-style-type: none; padding: 0;">
+        <ul  class="bg-white rounded ps-3 mt-3 list-group">
             <?php
                 if (!isset($_SESSION['resultados'])) {
                     $_SESSION['resultados'] = array();
                 }
 
                 foreach ($_SESSION['resultados'] as $valor) {
-                    echo "<li>$valor</li>";
+                    echo "<li class='list-group-item'>$valor</li>";
                 }
             ?>
         </ul>

@@ -1,22 +1,32 @@
 var operador = document.querySelector("#operador");
-var num2 = document.querySelector("#num2");
+var inputNum2 = document.querySelector("#num2");
 var labelNum2 = document.querySelector("#labelnum2");
 
 if(operador.value == "fatorial"){
-    num2.value = '';
-    num2.style.display = "none";
+    inputNum2.value = '';
+    labelNum2.style.visibility = "hidden";
+    inputNum2.style.visibility = "hidden";
     
 }else{
-    num2.style.display = "block";
+    labelNum2.style.visibility = "";
+    inputNum2.style.visibility = "";
+}
+
+if(operador.value == "potencia"){
+    labelNum2.textContent = 'Potência';
+}else{
+    labelNum2.textContent = 'Número 2';
 }
 
 operador.addEventListener("change", function(){
     if(operador.value == "fatorial"){ 
-        num2.value = '';
-        num2.style.display = "none";
+        inputNum2.value = '';
+        labelNum2.style.visibility = "hidden";
+        inputNum2.style.visibility = "hidden";
         
     }else{
-        num2.style.display = "block";
+        labelNum2.style.visibility = "";
+        inputNum2.style.visibility = "";
     }
 
     if(operador.value == "potencia"){
